@@ -1,0 +1,3 @@
+"""
+Documents bounded context package.
+"""
