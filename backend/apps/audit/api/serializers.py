@@ -4,7 +4,7 @@ Read-only presentation representations.
 """
 
 from rest_framework import serializers
-from apps.audit.models import AuditLog
+from apps.audit.models import AuditLog, SensitiveDataAccessLog
 
 
 class AuditLogSerializer(serializers.ModelSerializer):
@@ -28,5 +28,26 @@ class AuditLogSerializer(serializers.ModelSerializer):
             'reason',
             'ip_address',
             'occurred_at',
+        ]
+        read_only_fields = fields
+
+
+class SensitiveDataAccessLogSerializer(serializers.ModelSerializer):
+    """
+    Read-only serializer for SensitiveDataAccessLog records.
+    """
+    accessor_username = serializers.CharField(source='accessor.username', read_only=True, default=None)
+
+    class Meta:
+        model = SensitiveDataAccessLog
+        fields = [
+            'id',
+            'accessor',
+            'accessor_username',
+            'student_id',
+            'field_name',
+            'reason',
+            'ip_address',
+            'accessed_at',
         ]
         read_only_fields = fields
